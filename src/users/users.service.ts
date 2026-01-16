@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UpdateUserDTO } from './dto/updateUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 type User = {
   id: number;
@@ -24,9 +24,8 @@ export class UsersService {
     return this.users;
   }
 
-  getUser(userID: string) {
-    const userIDParse = parseInt(userID);
-    const userFound = this.findUser(userIDParse);
+  getUser(userID: number) {
+    const userFound = this.findUser(userID);
     return userFound;
   }
 
@@ -35,7 +34,7 @@ export class UsersService {
     return userCreate;
   }
 
-  updateUser(userDataUpdate: UpdateUserDTO) {
+  updateUser(userDataUpdate: UpdateUserDto) {
     const userID = userDataUpdate.id;
     const userUpdate = this.findUser(userID);
     const usersUpdated = this.users.map((user) => {

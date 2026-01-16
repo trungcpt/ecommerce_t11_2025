@@ -1,0 +1,15 @@
+class CreateCatDto {
+  name: string;
+  age: number;
+  breed: string;
+}
+
+class SchemaValidationCreateCatDto {
+  name: string;
+  age: number;
+  breed: string;
+}
+
+=> DRY => Don't repeat yourself => Đừng lặp lại cái đã có => Chỉ nên có 1 phiên bản duy nhất tham chiếu, tránh code trùng lặp
+
+consistency
