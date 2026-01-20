@@ -13,3 +13,38 @@ class SchemaValidationCreateCatDto {
 => DRY => Don't repeat yourself => Đừng lặp lại cái đã có => Chỉ nên có 1 phiên bản duy nhất tham chiếu, tránh code trùng lặp
 
 consistency
+
+
+env là 1 cái file cho phép chúng ta lưu trữ các giá trị cấu hình cần thiết cho server hoạt động ()
+
+.env
+PORT=4000
+
+SECRET_ID
+SECRET_KEY
+
+
+
+// Database
+
+// SELECT, INSERT, UPDATE, DELETE
+=> Làm việc ở tầng database => build SQL ở tầng code => thực thi câu lệnh SQL xuống database
+
+SQL Injection => 
+Dạng 1 + 2: Logic xử lý chủ yếu ở tầng database
+Dạng thứ 1
+const data = exec(`SELECT * FROM Student`)
+const data = exec(`INSERT INTO Student ...`)
+=> Raw SQL execute
+
+Dạng thứ 2
+Ở dưới database, có build sẵn các function thực thi các logic tương
+const createStudent = (param) => {}
+Procedure CreateStudent param {
+  INSERT INTO Student...
+}
+const data = exec(`CreateStudent('trungcpt')`)
+
+Dạng thứ 3 (ORM): => Logic trên tầng code
+SELECT * FROM Student => ORM: student.findMany()
+INSERT INTO Student => ORM: student.create({...})

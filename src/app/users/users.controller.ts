@@ -7,11 +7,16 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Version,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 
+// @Controller({
+//   path: 'users',
+//   version: '1',
+// })
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
