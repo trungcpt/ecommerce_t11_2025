@@ -1,0 +1,30 @@
+Tracking data => Theo dõi vòng đời dữ liệu
+
+createdAt   DateTime   @default(now())
+createdBy   String?
+updatedAt   DateTime   @updatedAt
+deletedAt   DateTime?
+
+
+
+2 dạng xóa dữ liệu: 
++ hard delete (xóa "cứng"): Xóa ra khỏi database 
++ soft delete (xóa "mềm"): isDelete, deletedAt => dữ liệu bị ẩn, "rác" => backup dữ liệu sang nơi khác => rollback, restore lại data
+
+
+
+// Phân quyền
+
+User: create, read, update, delete => /user_create /user_update
+
+=> /users: check dựa trên 4 action create, read, update, delete
+
+import excel => create 
+
+export excel => read
+
+=> RBAC
+
+Role 
+
+Permis

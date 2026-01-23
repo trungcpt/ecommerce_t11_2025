@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { UsersController } from './users.controller';
+// import { ExcelUtilService } from '../../common/utils/excel-util/excel-util.service';
+// import { PaginationUtilService } from '../../common/utils/pagination-util/pagination-util.service';
 
 @Module({
-  imports: [],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [
+    UsersService,
+    // ExcelUtilService, PaginationUtilService
+  ],
+  exports: [UsersService],
 })
 export class UsersModule {}

@@ -1,0 +1,14 @@
+Authentication => Xác thực => Bạn là ai?
+
+    => Authorization => Phân quyền => Bạn được phép làm gì?
+
+Đăng kí => account 
+=> password 
+Không lấy password lưu thẳng xuống database
+password => hash => ko, khó dịch ngược hash => password
+
+mã hóa => encrypt  
+giải mã => decrypt
+
+string => encrypt => text
+text => decrypt => string

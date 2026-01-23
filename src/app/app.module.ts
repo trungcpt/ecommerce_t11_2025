@@ -13,6 +13,9 @@ import { ApiUtilModule } from '../common/utils/api-util/api-util.module';
 import { LoggerModule } from '../logger/logger.module';
 import { LoggingInterceptor } from '../logger/logging.interceptor';
 import { PrismaModule } from '../common/prisma/prisma.module';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
+import { AccessControlGuard } from '../common/guards/access-control/access-control.guard';
 
 @Module({
   imports: [
@@ -25,6 +28,7 @@ import { PrismaModule } from '../common/prisma/prisma.module';
     UsersModule,
     LoggerModule,
     ApiUtilModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -53,6 +57,10 @@ import { PrismaModule } from '../common/prisma/prisma.module';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AccessControlGuard,
     },
   ],
 })

@@ -97,7 +97,7 @@ model User {
   updatedAt   DateTime   @updatedAt
   deletedAt   DateTime?
 
-  vendors         Vendor[]
+  vendors         Vendor[] // 1 - n
   userVendorRoles UserVendorRole[]
   orders          Order[]
   cart            Cart?
