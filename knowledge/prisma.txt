@@ -27,4 +27,7 @@ export excel => read
 
 Role 
 
-Permis
+
+Service -> Prisma Client -> Database 
+
+UserService => PrismaBaseService => PrismaService => PrismaClient => Database

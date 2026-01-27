@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     private authService: AuthService,
   ) {}
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  async canActivate(context: ExecutionContext) {
     const isSkipAuth = this.reflector.getAllAndOverride<boolean>(IS_SKIP_AUTH, [
       context.getHandler(),
       context.getClass(),

@@ -46,6 +46,9 @@ export class UsersService extends PrismaBaseService<'user'> {
   }
 
   async getUser(where: Prisma.UserWhereUniqueInput) {
+    // this.prismaService.user.create()
+    // this.client.create()
+    // const data = await this.client.findUnique({ where });
     const data = await this.extended.findUnique({
       where,
     });

@@ -8,7 +8,7 @@ export class PrismaBaseService<
 > {
   constructor(
     protected prismaService: PrismaService,
-    private readonly model: K,
+    private readonly model: K, // => user, product, permission, ...
   ) {}
 
   protected get client(): PrismaClient[K] {

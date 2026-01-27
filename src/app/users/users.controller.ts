@@ -11,6 +11,7 @@ import {
   UploadedFile,
   Res,
   UsePipes,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,7 +21,7 @@ import { ExportUsersDto } from './dto/get-user.dto';
 import { User } from '../../common/decorators/user.decorator';
 import type { UserInfo } from '../../common/decorators/user.decorator';
 // import type { File } from '../../common/utils/excel-util/dto/excel-util.interface';
-import type { Response } from 'express';
+import type { Response, Request } from 'express';
 // import { ExcelResponseInterceptor } from '../../common/interceptors/excel-response/excel-response.interceptor';
 // import { GetOptionsParams } from '../../common/query/options.interface';
 import { IDDto } from '../../common/dto/param.dto';
@@ -66,7 +67,7 @@ export class UsersController {
   // }
 
   @Get(':id')
-  getUser(@Param() { id }: IDDto) {
+  getUser(@Param() { id }: IDDto, @User() user) {
     return this.usersService.getUser({ id });
   }
 
