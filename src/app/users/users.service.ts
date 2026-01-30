@@ -14,6 +14,7 @@ import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaBaseService } from '../../common/services/prisma-base.service';
 import { PrismaService } from '../../common/prisma/prisma.service';
+import { Actions } from '../../common/guards/access-control/access-control.const';
 // import { Actions } from '../../common/guards/access-control/access-control.const';
 // import {
 //   GetOptionsParams,
@@ -216,15 +217,14 @@ export class UsersService extends PrismaBaseService<'user'> {
     if (!user) return false;
 
     const [route] = permissionKey.split('_');
-    return true;
-    // const isExistPermission = user.userVendorRoles?.some((item) =>
-    //   item.role?.rolePermissions?.some(
-    //     (rp) =>
-    //       rp.permission?.key?.includes(permissionKey) ||
-    //       rp.permission?.key?.includes(`${route}_[${Actions.MANAGE}]`),
-    //   ),
-    // );
+    const isExistPermission = user.userVendorRoles?.some((item) =>
+      item.role?.rolePermissions?.some(
+        (rp) =>
+          rp.permission?.key?.includes(permissionKey) ||
+          rp.permission?.key?.includes(`${route}_[${Actions.MANAGE}]`),
+      ),
+    );
 
-    // return isExistPermission ? true : false;
+    return isExistPermission ? true : false;
   }
 }

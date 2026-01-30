@@ -16,6 +16,13 @@ import { PrismaModule } from '../common/prisma/prisma.module';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { AccessControlGuard } from '../common/guards/access-control/access-control.guard';
+import { PermissionsModule } from './permissions/permissions.module';
+import { RolesModule } from './roles/roles.module';
+import { RolePermissionsModule } from './role-permissions/role-permissions.module';
+import { UserVendorRolesModule } from './user-vendor-roles/user-vendor-roles.module';
+import { VendorsModule } from './vendors/vendors.module';
+import { QueryUtilModule } from '../common/utils/query-util/query-util.module';
+import { FileUtilModule } from '../common/utils/file-util/file-util.module';
 
 @Module({
   imports: [
@@ -29,6 +36,14 @@ import { AccessControlGuard } from '../common/guards/access-control/access-contr
     LoggerModule,
     ApiUtilModule,
     AuthModule,
+    PermissionsModule,
+    RolesModule,
+    RolePermissionsModule,
+    UserVendorRolesModule,
+    VendorsModule,
+    QueryUtilModule,
+    UsersModule,
+    FileUtilModule,
   ],
   controllers: [AppController],
   providers: [

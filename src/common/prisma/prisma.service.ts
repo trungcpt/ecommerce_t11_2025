@@ -13,6 +13,7 @@ import { StringUtilService } from '../utils/string-util/string-util.service';
 import { DateUtilService } from '../utils/date-util/date-util.service';
 import { includes, isEmpty } from 'es-toolkit/compat';
 import { Decimal } from '@prisma/client/runtime/library';
+import { Vendor } from '../../app/vendors/entities/vendor.entity';
 @Injectable()
 export class PrismaService
   extends PrismaClient
@@ -67,9 +68,13 @@ export class PrismaService
     return omit(value, excludeFields);
   }
 
-  private transferDataCreate(value) {
-    const dataCreatedBy = this.setCreatedBy(value);
-    const data: any = this.omitData(dataCreatedBy, ['user', 'id']);
+  private transferDataCreate(value, model) {
+    const modelsWithUserID = [Vendor.name];
+    const dataTransfer = this.setCreatedBy(value);
+    if (model && modelsWithUserID.includes(model)) {
+      dataTransfer.userID = dataTransfer.user.userID;
+    }
+    const data: any = this.omitData(dataTransfer, ['user', 'id']);
     return data;
   }
 
@@ -139,19 +144,19 @@ export class PrismaService
           },
           create: ({ args, query, model }) => {
             const generateData = this.generateData(args.data, model);
-            const transferData = this.transferDataCreate(generateData);
+            const transferData = this.transferDataCreate(generateData, model);
             args.data = transferData;
             return query(args);
           },
           createMany: ({ args, query, model }) => {
             const generateData = this.generateData(args.data, model);
-            const transferData = this.transferDataCreate(generateData);
+            const transferData = this.transferDataCreate(generateData, model);
             args.data = transferData;
             return query(args);
           },
           createManyAndReturn: ({ args, query, model }) => {
             const generateData = this.generateData(args.data, model);
-            const transferData = this.transferDataCreate(generateData);
+            const transferData = this.transferDataCreate(generateData, model);
             args.data = transferData;
             return query(args);
           },
@@ -167,13 +172,17 @@ export class PrismaService
           },
           upsert: ({ args, query, model }) => {
             const generateCreateData = this.generateData(args.create, model);
-            const transferCreateData =
-              this.transferDataCreate(generateCreateData);
+            const transferCreateData = this.transferDataCreate(
+              generateCreateData,
+              model,
+            );
             args.create = transferCreateData;
 
             const generateUpdateData = this.generateData(args.update, model);
-            const transferUpdateData =
-              this.transferDataCreate(generateUpdateData);
+            const transferUpdateData = this.transferDataCreate(
+              generateUpdateData,
+              model,
+            );
             args.update = transferUpdateData;
             return query(args);
           },
@@ -231,18 +240,18 @@ export class PrismaService
           },
         },
       },
-      result: {
-        $allModels: {
-          createdAt: {
-            compute: ({ createdAt }) =>
-              this.dateUtilService.formatDate(createdAt),
-          },
-          updatedAt: {
-            compute: ({ updatedAt }) =>
-              this.dateUtilService.formatDate(updatedAt),
-          },
-        },
-      },
+      // result: {
+      //   $allModels: {
+      //     createdAt: {
+      //       compute: ({ createdAt }) =>
+      //         this.dateUtilService.formatDate(createdAt),
+      //     },
+      //     updatedAt: {
+      //       compute: ({ updatedAt }) =>
+      //         this.dateUtilService.formatDate(updatedAt),
+      //     },
+      //   },
+      // },
     });
     // Prisma Client => Custom thêm một vài logic khác: Prisma Client + Prisma Custom
     this._extended = extended;
