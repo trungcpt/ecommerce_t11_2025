@@ -1,8 +1,17 @@
-import { UserStatus, VendorStatus, UserVendorRoleStatus, ProductStatus, OrderStatus, AddressType, PromotionStatus, PromotionType, PaymentStatus, PaymentType } from '@prisma/client';
+import {
+  UserStatus,
+  VendorStatus,
+  UserVendorRoleStatus,
+  ProductStatus,
+  OrderStatus,
+  AddressType,
+  PromotionStatus,
+  PromotionType,
+  PaymentStatus,
+  PaymentType,
+} from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import Decimal from 'decimal.js';
-
-
 
 export function fakeUser() {
   return {
@@ -416,8 +425,17 @@ export function fakeNotificationComplete() {
 }
 export function fakePayment() {
   return {
-    type: faker.helpers.arrayElement([PaymentType.creditCard, PaymentType.bankTransfer, PaymentType.eWallet] as const),
-    status: faker.helpers.arrayElement([PaymentStatus.pending, PaymentStatus.completed, PaymentStatus.failed, PaymentStatus.refunded] as const),
+    type: faker.helpers.arrayElement([
+      PaymentType.creditCard,
+      PaymentType.bankTransfer,
+      PaymentType.eWallet,
+    ] as const),
+    status: faker.helpers.arrayElement([
+      PaymentStatus.pending,
+      PaymentStatus.completed,
+      PaymentStatus.failed,
+      PaymentStatus.refunded,
+    ] as const),
     amount: new Decimal(faker.number.float()),
     transactionID: undefined,
     createdBy: undefined,
@@ -429,8 +447,17 @@ export function fakePaymentComplete() {
   return {
     id: faker.string.uuid(),
     orderID: faker.string.uuid(),
-    type: faker.helpers.arrayElement([PaymentType.creditCard, PaymentType.bankTransfer, PaymentType.eWallet] as const),
-    status: faker.helpers.arrayElement([PaymentStatus.pending, PaymentStatus.completed, PaymentStatus.failed, PaymentStatus.refunded] as const),
+    type: faker.helpers.arrayElement([
+      PaymentType.creditCard,
+      PaymentType.bankTransfer,
+      PaymentType.eWallet,
+    ] as const),
+    status: faker.helpers.arrayElement([
+      PaymentStatus.pending,
+      PaymentStatus.completed,
+      PaymentStatus.failed,
+      PaymentStatus.refunded,
+    ] as const),
     amount: new Decimal(faker.number.float()),
     transactionID: undefined,
     createdAt: new Date(),
