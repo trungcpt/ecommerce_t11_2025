@@ -17,7 +17,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ExportUsersDto } from './dto/get-user.dto';
-// import { GetUsersPaginationDto } from './dto/get-user.dto';
+import { GetUsersPaginationDto } from './dto/get-user.dto';
 import { User } from '../../common/decorators/user.decorator';
 import type { UserInfo } from '../../common/decorators/user.decorator';
 // import type { File } from '../../common/utils/excel-util/dto/excel-util.interface';
@@ -55,10 +55,10 @@ export class UsersController {
   //   return this.usersService.importUsers({ file, user });
   // }
 
-  // @Get()
-  // getUsers(@Query() query: GetUsersPaginationDto) {
-  //   return this.usersService.getUsers(query);
-  // }
+  @Get()
+  getUsers(@Query() query: GetUsersPaginationDto) {
+    return this.usersService.getUsers(query);
+  }
 
   // @Get('options')
   // @UsePipes(ParseParamsOptionPipe)

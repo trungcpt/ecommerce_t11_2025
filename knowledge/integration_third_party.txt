@@ -1,0 +1,11 @@
+Integration third party (Tích hợp bên thứ 3)
+       
+Server => Proxy =>  Call third party => Response => Save to server
+
+
+Step 1: Đăng kí cái ứng dụng, thông tin (server) trên third party => Biết đc là bạn muốn tích hợp những cái gì 
+
+Step 2: Third party cấp cho bạn secret_key, client secret, client id để b có thể truy cập các cái dịch vụ bên third party 
+
+Step 3: Mỗi lần call đến third party thì gửi secret_key, client secret, client id, payload tương ứng dựa trên API Docs được cung cấp thì sẽ access đc vào resource bên third party 
+

@@ -7,7 +7,7 @@ import {
 } from './dto/create-user.dto';
 import {
   ExportUsersDto,
-  // GetUsersPaginationDto,
+  GetUsersPaginationDto,
   IsExistPermissionKeyDto,
 } from './dto/get-user.dto';
 import { User } from './entities/user.entity';
@@ -20,8 +20,8 @@ import { Actions } from '../../common/guards/access-control/access-control.const
 //   GetOptionsParams,
 //   Options,
 // } from '../../common/query/options.interface';
-// import { PaginationUtilService } from '../../common/utils/pagination-util/pagination-util.service';
-// import { QueryUtilService } from '../../common/utils/query-util/query-util.service';
+import { PaginationUtilService } from '../../common/utils/pagination-util/pagination-util.service';
+import { QueryUtilService } from '../../common/utils/query-util/query-util.service';
 @Injectable()
 // implements Options
 export class UsersService extends PrismaBaseService<'user'> {
@@ -32,8 +32,8 @@ export class UsersService extends PrismaBaseService<'user'> {
   constructor(
     // private excelUtilService: ExcelUtilService,
     public prismaService: PrismaService,
-    // private paginationUtilService: PaginationUtilService,
-    // private queryUtilService: QueryUtilService,
+    private paginationUtilService: PaginationUtilService,
+    private queryUtilService: QueryUtilService,
   ) {
     super(prismaService, 'user');
   }
@@ -56,38 +56,40 @@ export class UsersService extends PrismaBaseService<'user'> {
     return data;
   }
 
-  // async getUsers({
-  //   page,
-  //   itemPerPage,
-  //   select,
-  //   ...search
-  // }: GetUsersPaginationDto) {
-  //   // const usersCacheKey = this.getUsers.name;
-  //   // const usersCached = await this.cacheManager.get(usersCacheKey);
-  //   // if (usersCached) return usersCached;
+  async getUsers({
+    page,
+    itemPerPage,
+    select,
+    ...search
+  }: GetUsersPaginationDto) {
+    const list = await this.extended.findMany();
+    return list;
+    // const usersCacheKey = this.getUsers.name;
+    // const usersCached = await this.cacheManager.get(usersCacheKey);
+    // if (usersCached) return usersCached;
 
-  //   const totalItems = await this.extended.count();
-  //   const paging = this.paginationUtilService.paging({
-  //     page,
-  //     itemPerPage,
-  //     totalItems,
-  //   });
-  //   const fieldsSelect =
-  //     this.queryUtilService.convertFieldsSelectOption<User>(select);
-  //   const searchQuery = this.queryUtilService.buildSearchQuery<User>({
-  //     search,
-  //   });
-  //   const list = await this.extended.findMany({
-  //     select: fieldsSelect,
-  //     skip: paging.skip,
-  //     take: paging.itemPerPage,
-  //     where: searchQuery,
-  //   });
+    // const totalItems = await this.extended.count();
+    // const paging = this.paginationUtilService.paging({
+    //   page,
+    //   itemPerPage,
+    //   totalItems,
+    // });
+    // const fieldsSelect =
+    //   this.queryUtilService.convertFieldsSelectOption<User>(select);
+    // const searchQuery = this.queryUtilService.buildSearchQuery<User>({
+    //   search,
+    // });
+    // const list = await this.extended.findMany({
+    //   select: fieldsSelect,
+    //   skip: paging.skip,
+    //   take: paging.itemPerPage,
+    //   where: searchQuery,
+    // });
 
-  //   const data = paging.format(list);
-  //   // await this.cacheManager.set(usersCacheKey, data);
-  //   return data;
-  // }
+    // const data = paging.format(list);
+    // await this.cacheManager.set(usersCacheKey, data);
+    // return data;
+  }
 
   async createUser(createUserDto: CreateUserDto) {
     const data = await this.extended.create({

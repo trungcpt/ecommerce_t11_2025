@@ -1,0 +1,28 @@
+Unit Test
+
+Integration Test
+
+QC / QA => Tester
+Manual Test => Thuần test về các thao tác trên ứng dụng => thao tác thủ công tay các tính năng 
+Automation Test => Technical => Viết code tự động hóa test các feature
+
+Feature A => Bộ Unit Test passed cho feat A
+
+Enhance (nâng cấp) feature A => Add feature C vào feature A hoặc là chỉnh sửa logic feature A => chạy lại bộ test => FAILED => biết đc khả năng cao tích hợp code mới đang có vấn đề
+                      => PASSED => Tự tin là code mới update hoạt động đúng mong đợi
+
+Pure function => Đc khuyến khích viết để chạy Unit Test dễ dàng
+
+Integration Test
+Ở Unit Test => kiểm tra mức độ hàm => các logic độc lập, riêng lẻ 
+- Đăng kí => function signUp => 1 UT
+- Đăng nhập => function signIn => 1 UT
+- Tạo sản phẩm => function createProduct => 1 UT
+
+=> Mock data => Gỉa lập data luôn trả về 1 response cố định
+
+Nhưng ở integration test thì là một chuỗi các tính năng liên kết với nhau:
+Test tính năng tạo sản phẩm từ người dùng:
+Step 1: Đăng kí tài khoản
+Step 2: Đăng nhập
+Step 3: Tạo sản phẩm
