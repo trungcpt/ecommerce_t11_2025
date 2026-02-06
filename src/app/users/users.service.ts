@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Prisma, VendorStatus } from '@prisma/client';
 // import { ExcelUtilService } from '../../common/utils/excel-util/excel-util.service';
 import {
@@ -22,6 +22,8 @@ import { Actions } from '../../common/guards/access-control/access-control.const
 // } from '../../common/query/options.interface';
 import { PaginationUtilService } from '../../common/utils/pagination-util/pagination-util.service';
 import { QueryUtilService } from '../../common/utils/query-util/query-util.service';
+import { isEmpty } from 'es-toolkit/compat';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 @Injectable()
 // implements Options
 export class UsersService extends PrismaBaseService<'user'> {
@@ -34,6 +36,7 @@ export class UsersService extends PrismaBaseService<'user'> {
     public prismaService: PrismaService,
     private paginationUtilService: PaginationUtilService,
     private queryUtilService: QueryUtilService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {
     super(prismaService, 'user');
   }
@@ -62,33 +65,35 @@ export class UsersService extends PrismaBaseService<'user'> {
     select,
     ...search
   }: GetUsersPaginationDto) {
-    const list = await this.extended.findMany();
-    return list;
-    // const usersCacheKey = this.getUsers.name;
-    // const usersCached = await this.cacheManager.get(usersCacheKey);
-    // if (usersCached) return usersCached;
+    const usersCacheKey = this.getUsers.name;
+    const usersCached = await this.cacheManager.get(usersCacheKey);
+    if (usersCached) return usersCached;
 
-    // const totalItems = await this.extended.count();
-    // const paging = this.paginationUtilService.paging({
-    //   page,
-    //   itemPerPage,
-    //   totalItems,
-    // });
-    // const fieldsSelect =
-    //   this.queryUtilService.convertFieldsSelectOption<User>(select);
-    // const searchQuery = this.queryUtilService.buildSearchQuery<User>({
-    //   search,
-    // });
-    // const list = await this.extended.findMany({
-    //   select: fieldsSelect,
-    //   skip: paging.skip,
-    //   take: paging.itemPerPage,
-    //   where: searchQuery,
-    // });
+    const totalItems = await this.extended.count();
+    const paging = this.paginationUtilService.paging({
+      page,
+      itemPerPage,
+      totalItems,
+    });
+    const fieldsSelect =
+      this.queryUtilService.convertFieldsSelectOption<User>(select);
+    let searchQuery = {};
+    if (!isEmpty(search)) {
+      searchQuery = this.queryUtilService.buildSearchQuery<User>({
+        search,
+      });
+    }
 
-    // const data = paging.format(list);
-    // await this.cacheManager.set(usersCacheKey, data);
-    // return data;
+    const list = await this.extended.findMany({
+      select: fieldsSelect,
+      skip: paging.skip,
+      take: paging.itemPerPage,
+      where: searchQuery,
+    });
+
+    const data = paging.format(list);
+    await this.cacheManager.set(usersCacheKey, data);
+    return data;
   }
 
   async createUser(createUserDto: CreateUserDto) {
